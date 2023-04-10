@@ -12,5 +12,5 @@ func main() {
 	fmt.Println("MongoDB API")
 	r := router.Router()
 	fmt.Println("Server is getting started...")
-	log.Fatal(http.ListenAndServe(":4001", r))
+	log.Fatal(http.ListenAndServe(":4002", r))
 }

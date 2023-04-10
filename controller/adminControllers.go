@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"path"
-	"strings"
+
+	"github.com/AryanJain1/cronjob1/model"
 )
 
 // var cancelFunc context.CancelFunc
-var cancelMap = make(map[string]context.CancelFunc)
+var cancelMap = make(map[model.CronJob]context.CancelFunc)
 
 func CronJobStart(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
@@ -17,15 +17,18 @@ func CronJobStart(w http.ResponseWriter, r *http.Request) {
 
 	var request = make(map[string]interface{})
 	json.NewDecoder(r.Body).Decode(&request)
+	var cronJob model.CronJob
+	cronJob.RepoUrl = request["repositaryLink"].(string)
+	cronJob.Location = request["backupLocation"].(string)
+	cronJob.Frequency = int(request["backupFrequency"].(float64))
+	// // fmt.Println(request["repositaryLink"])
+	// component := path.Base(request["repositaryLink"].(string))
 
-	// fmt.Println(request["repositaryLink"])
-	component := path.Base(request["repositaryLink"].(string))
-
-	// Remove the ".git" extension
-	component = strings.TrimSuffix(component, ".git")
+	// // Remove the ".git" extension
+	// component = strings.TrimSuffix(component, ".git")
 	// Create a new ZIP file
 	ctx, cancel := context.WithCancel(context.Background())
-	cancelMap[component] = cancel
+	cancelMap[cronJob] = cancel
 	go runCronJobs(request, ctx)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
@@ -38,14 +41,16 @@ func Stop(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Allow-Control-Allow-Methods", "POST")
 	var request = make(map[string]interface{})
 	json.NewDecoder(r.Body).Decode(&request)
+	var cronJob model.CronJob
+	cronJob.RepoUrl = request["repositaryLink"].(string)
+	cronJob.Location = request["backupLocation"].(string)
+	cronJob.Frequency = int(request["backupFrequency"].(float64))
+	// // fmt.Println(request["repositaryLink"])
+	// component := path.Base(request["repositaryLink"].(string))
+	// // Remove the ".git" extension
+	// component = strings.TrimSuffix(component, ".git")
 
-	// fmt.Println(request["repositaryLink"])
-	component := path.Base(request["repositaryLink"].(string))
-
-	// Remove the ".git" extension
-	component = strings.TrimSuffix(component, ".git")
-
-	stopHelper(cancelMap, component)
+	stopHelper(cancelMap, cronJob)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"message": "cronjob stopped",

@@ -14,6 +14,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/AryanJain1/cronjob1/model"
 )
 
 // 2
@@ -146,8 +148,8 @@ func runCronJobs(request map[string]interface{}, ctx context.Context) {
 
 }
 
-func stopHelper(cancelMap map[string]context.CancelFunc, name string) {
-	var cancel = cancelMap[name]
+func stopHelper(cancelMap map[model.CronJob]context.CancelFunc, cronJob model.CronJob) {
+	var cancel = cancelMap[cronJob]
 	cancel()
 	fmt.Println("Task stopping...")
 }
