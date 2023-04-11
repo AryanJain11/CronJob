@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AryanJain1/cronjob1/model"
+	"CronJob/model"
 )
 
 // 2

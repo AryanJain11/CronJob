@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/AryanJain1/cronjob1/router"
+	"CronJob/router"
 )
 
 func main() {

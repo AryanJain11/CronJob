@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/AryanJain1/cronjob1/model"
+	"CronJob/model"
 )
 
 // var cancelFunc context.CancelFunc

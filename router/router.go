@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/AryanJain1/cronjob1/controller"
+	"CronJob/controller"
 	"github.com/gorilla/mux"
 )
 
